@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import CsvDownloader from 'react-csv-downloader'
 import '../style/data.css'
 
-import {createADMObject} from '../functions'
+import {createADM} from '../functions'
 
 function Data() {
 
@@ -14,12 +14,11 @@ function Data() {
         <div className='buttons'>
           <CsvDownloader 
             text="Download ADM" 
-            datas={() => createADMObject(rawData)} 
+            datas={() => createADM(rawData)} 
             filename="ADM"
             extension='.csv'
             separator=';'
           />
-          
         </div>
     </div>
   )
