@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import CsvDownloader from 'react-csv-downloader'
 import '../style/data.css'
 
-import {createADM} from '../functions'
+import {createADM, createCPA, createAGC} from '../functions'
 
 function Data() {
 
@@ -16,6 +16,20 @@ function Data() {
             text="Download ADM" 
             datas={() => createADM(rawData)} 
             filename="ADM"
+            extension='.csv'
+            separator=';'
+          />
+          <CsvDownloader 
+            text="Download CPA" 
+            datas={() => createCPA(rawData)} 
+            filename="CPA"
+            extension='.csv'
+            separator=';'
+          />
+          <CsvDownloader 
+            text="Download AGC" 
+            datas={() => createAGC(rawData)} 
+            filename="AGC"
             extension='.csv'
             separator=';'
           />
