@@ -6,57 +6,159 @@ import { createADM, createCPA, createAGC, createGAX } from "../functions";
 
 function Data() {
   const [rawData, setRawData] = useState(undefined);
-  const [ADMData, setADMData] = useState(undefined);
-  const [CPAData, setCPAData] = useState(undefined);
-  const [AGCData, setAGCData] = useState(undefined);
-  const [GAXData, setGAXData] = useState(undefined);
+
+  const CPAColumns = [
+    {
+      id: "1",
+      displayName: "E-Portal Zone",
+    },
+    {
+      id: "2",
+      displayName: "NUM_NumComm",
+    },
+    {
+      id: "3",
+      displayName: "NUM_MerchantID_Worldpay",
+    },
+    {
+      id: "4",
+      displayName: "NUM_MerchantID_Amex",
+    },
+    {
+      id: "5",
+      displayName: "NUM_MerchantID_Barclaycard",
+    },
+    {
+      id: "6",
+      displayName: "NUM_MerchantID_Tsys",
+    },
+    {
+      id: "7",
+      displayName: "POS_TerminalID",
+    },
+    {
+      id: "8",
+      displayName: "POS_POSNumber",
+    },
+    {
+      id: "9",
+      displayName: "NUM_Environment",
+    },
+    {
+      id: "10",
+      displayName: "NUM_CompanyID_Worldpay",
+    },
+    {
+      id: "11",
+      displayName: "NUM_Beach",
+    },
+    {
+      id: "12",
+      displayName: "NUM_AFD",
+    },
+    {
+      id: "13",
+      displayName: "POS_Environment",
+    },
+  ];
+  const ADMColumns = [
+    {
+      id: "1",
+      displayName: "E-Portal Zone",
+    },
+    {
+      id: "2",
+      displayName: "POS_POSNumber",
+    },
+    {
+      id: "3",
+      displayName: "POS_PCI4",
+    },
+  ];
+  const AGCColumns = [
+    {
+      id: "1",
+      displayName: "E-Portal Zone",
+    },
+    {
+      id: "2",
+      displayName: "NUM_NumComm",
+    },
+    {
+      id: "3",
+      displayName: "NUM_MerchantID_IKANO",
+    },
+    {
+      id: "4",
+      displayName: "NUM_MerchantID_PPSUK",
+    },
+    {
+      id: "5",
+      displayName: "NUM_MerchantID_EPAYUK",
+    },
+    {
+      id: "6",
+      displayName: "POS_TerminalID",
+    },
+    {
+      id: "7",
+      displayName: "POS_POSNumber",
+    },
+  ];
+  const GAXColumns = [
+    {
+      id: "1",
+      displayName: "E-Portal Zone",
+    },
+    {
+      id: "2",
+      displayName: "NUM_NumComm",
+    },
+    {
+      id: "3",
+      displayName: "NUM_MerchantID_SAVEBACK",
+    },
+    {
+      id: "4",
+      displayName: "POS_POSNumber",
+    },
+  ];
 
   return (
     <div>
-      <button onClick={() => console.log(ADMData)}>Console</button>
       <textarea
         placeholder="Enter the data from the raw data tab"
         onChange={(e) => setRawData(e.target.value)}
       ></textarea>
-      <div className="generate-buttons">
-        <button onClick={() => setADMData(() => createADM(rawData))}>
-          Generate ADM
-        </button>
-        <button onClick={() => setCPAData(() => createCPA(rawData))}>
-          Generate CPA
-        </button>
-        <button onClick={() => setAGCData(() => createAGC(rawData))}>
-          Generate AGC
-        </button>
-        <button onClick={() => setGAXData(() => createGAX(rawData))}>
-          Generate GAX
-        </button>
-      </div>
       <div className="buttons">
         <CsvDownloader
           text="Download ADM"
-          datas={() => createADM(rawData)}
+          columns={ADMColumns}
+          datas={createADM(rawData)}
           filename="ADM"
           extension=".csv"
           separator=";"
         />
         <CsvDownloader
           text="Download CPA"
-          datas={() => createCPA(rawData)}
+          columns={CPAColumns}
+          datas={createCPA(rawData)}
           filename="CPA"
           extension=".csv"
           separator=";"
         />
         <CsvDownloader
           text="Download AGC"
-          datas={() => createAGC(rawData)}
+          columns={AGCColumns}
+          datas={createAGC(rawData)}
           filename="AGC"
           extension=".csv"
           separator=";"
         />
         <CsvDownloader
           text="Download GAX"
-          datas={() => createGAX(rawData)}
+          columns={GAXColumns}
+          datas={createGAX(rawData)}
           filename="GAX"
           extension=".csv"
           separator=";"

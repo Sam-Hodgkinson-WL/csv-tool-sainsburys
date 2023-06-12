@@ -42,6 +42,15 @@ let blankVariableForm = {
   ADDRESS_2_2: undefined,
 };
 
+const storeLookup = {
+  Main: { numcommAppend: "00", worldpayID: "025549" },
+  PFS: { numcommAppend: "01", worldpayID: "027492" },
+  Local: { numcommAppend: "05", worldpayID: "109779" },
+  OPT: { numcommAppend: "06", worldpayID: "114288" },
+  SCO: { numcommAppend: "07", worldpayID: "112326" },
+  Pharmacy: { numcommAppend: "09", worldpayID: "372835" },
+};
+
 ////////////////////////////////////////////////////////////////////
 // ADM
 function createADM(data) {
@@ -53,9 +62,9 @@ function createADM(data) {
     blankVariableForm.POS_POS_NUMBER = values[25];
     blankVariableForm.POS_PCI4 = values[25] % 2 === 0 ? 0 : 1;
     ADM_DATA.push({
-      cell1: blankVariableForm.E_PORTAL_ZONE,
-      cell2: blankVariableForm.POS_POS_NUMBER,
-      cell3: blankVariableForm.POS_PCI4,
+      1: blankVariableForm.E_PORTAL_ZONE,
+      2: blankVariableForm.POS_POS_NUMBER,
+      3: blankVariableForm.POS_PCI4,
     });
   });
   return ADM_DATA;
@@ -69,8 +78,10 @@ async function createCPA(data) {
   await lines.forEach((line) => {
     const values = line.split("\t");
     const LEVEL_3_SPLIT = values[2].split("_");
+    const storeNum = values[3];
+    const storeType = LEVEL_3_SPLIT[1];
     blankVariableForm.E_PORTAL_ZONE = `${values[0]}>>${values[1]}>>${values[2]}`;
-    blankVariableForm.NUM_NUMCOMM = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!"; // ASK MIKE S ABOUT THIS FUNCTION AND THE FUNCTION FOR NUM_MERCHANT_ID_TSYS!!!
+    blankVariableForm.NUM_NUMCOMM = `3${storeNum}${storeLookup[storeType].numcommAppend}`; // Double check this function with MIKE S!!!
     blankVariableForm.NUM_MERCHANT_ID_WORLDPAY = values[13];
     blankVariableForm.NUM_MERCHANT_ID_AMEX = values[14];
     blankVariableForm.NUM_MERCHANT_ID_BARCLAYCARD = values[16];
@@ -78,25 +89,25 @@ async function createCPA(data) {
     blankVariableForm.POS_TERMINAL_ID = values[24];
     blankVariableForm.POS_POS_NUMBER = values[25];
     blankVariableForm.NUM_ENVIRONMENT = LEVEL_3_SPLIT[1];
-    blankVariableForm.NUM_COMPANY_ID_WORLDPAY = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!"; // prettier-ignore
-    blankVariableForm.NUM_BEACH = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!";
-    blankVariableForm.NUM_AFD = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!";
+    blankVariableForm.NUM_COMPANY_ID_WORLDPAY = storeLookup[LEVEL_3_SPLIT[1]].worldpayID ; // prettier-ignore
+    blankVariableForm.NUM_BEACH = values[10];
+    blankVariableForm.NUM_AFD = LEVEL_3_SPLIT[1] === "OPT" ? "Y" : "N";
     blankVariableForm.POS_ENVIRONMENT = LEVEL_3_SPLIT[1];
 
     CPA_DATA.push({
-      cell1: blankVariableForm.E_PORTAL_ZONE,
-      cell2: blankVariableForm.NUM_NUMCOMM,
-      cell3: blankVariableForm.NUM_MERCHANT_ID_WORLDPAY,
-      cell4: blankVariableForm.NUM_MERCHANT_ID_AMEX,
-      cell5: blankVariableForm.NUM_MERCHANT_ID_BARCLAYCARD,
-      cell6: blankVariableForm.NUM_MERCHANT_ID_TSYS,
-      cell7: blankVariableForm.POS_TERMINAL_ID,
-      cell8: blankVariableForm.POS_POS_NUMBER,
-      cell9: blankVariableForm.NUM_ENVIRONMENT,
-      cell10: blankVariableForm.NUM_COMPANY_ID_WORLDPAY,
-      cell11: blankVariableForm.NUM_BEACH,
-      cell12: blankVariableForm.NUM_AFD,
-      cell13: blankVariableForm.POS_ENVIRONMENT,
+      1: blankVariableForm.E_PORTAL_ZONE,
+      2: blankVariableForm.NUM_NUMCOMM,
+      3: blankVariableForm.NUM_MERCHANT_ID_WORLDPAY,
+      4: blankVariableForm.NUM_MERCHANT_ID_AMEX,
+      5: blankVariableForm.NUM_MERCHANT_ID_BARCLAYCARD,
+      6: blankVariableForm.NUM_MERCHANT_ID_TSYS,
+      7: blankVariableForm.POS_TERMINAL_ID,
+      8: blankVariableForm.POS_POS_NUMBER,
+      9: blankVariableForm.NUM_ENVIRONMENT,
+      10: blankVariableForm.NUM_COMPANY_ID_WORLDPAY,
+      11: blankVariableForm.NUM_BEACH,
+      12: blankVariableForm.NUM_AFD,
+      13: blankVariableForm.POS_ENVIRONMENT,
     });
   });
   return CPA_DATA;
@@ -109,8 +120,11 @@ async function createAGC(data) {
   const lines = data.split("\n");
   await lines.forEach((line) => {
     const values = line.split("\t");
+    const LEVEL_3_SPLIT = values[2].split("_");
+    const storeNum = values[3];
+    const storeType = LEVEL_3_SPLIT[1];
     blankVariableForm.E_PORTAL_ZONE = `${values[0]}>>${values[1]}>>${values[2]}`;
-    blankVariableForm.NUM_NUMCOMM = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!"; // ASK MIKE S ABOUT THIS FUNCTION AND THE FUNCTION FOR NUM_MERCHANT_ID_TSYS!!!
+    blankVariableForm.NUM_NUMCOMM = `3${storeNum}${storeLookup[storeType].numcommAppend}`; // Double check this function with MIKE S!!!
     blankVariableForm.NUM_MERCHANT_ID_IKANO = 79569999;
     blankVariableForm.NUM_MERCHANT_ID_PPSUK = values[21];
     blankVariableForm.NUM_MERCHANT_ID_EPAYUK = values[20];
@@ -118,13 +132,13 @@ async function createAGC(data) {
     blankVariableForm.POS_POS_NUMBER = values[25];
 
     AGC_DATA.push({
-      cell1: blankVariableForm.E_PORTAL_ZONE,
-      cell2: blankVariableForm.NUM_NUMCOMM,
-      cell3: blankVariableForm.NUM_MERCHANT_ID_IKANO,
-      cell4: blankVariableForm.NUM_MERCHANT_ID_PPSUK,
-      cell5: blankVariableForm.NUM_MERCHANT_ID_EPAYUK,
-      cell6: blankVariableForm.POS_TERMINAL_ID,
-      cell7: blankVariableForm.POS_POS_NUMBER,
+      1: blankVariableForm.E_PORTAL_ZONE,
+      2: blankVariableForm.NUM_NUMCOMM,
+      3: blankVariableForm.NUM_MERCHANT_ID_IKANO,
+      4: blankVariableForm.NUM_MERCHANT_ID_PPSUK,
+      5: blankVariableForm.NUM_MERCHANT_ID_EPAYUK,
+      6: blankVariableForm.POS_TERMINAL_ID,
+      7: blankVariableForm.POS_POS_NUMBER,
     });
   });
   return AGC_DATA;
@@ -136,16 +150,19 @@ async function createGAX(data) {
   const lines = data.split("\n");
   await lines.forEach((line) => {
     const values = line.split("\t");
+    const LEVEL_3_SPLIT = values[2].split("_");
+    const storeNum = values[3];
+    const storeType = LEVEL_3_SPLIT[1];
     blankVariableForm.E_PORTAL_ZONE = `${values[0]}>>${values[1]}>>${values[2]}`;
-    blankVariableForm.NUM_NUMCOMM = "SPEAK TO MIKE S TO FIGURE THIS ONE OUT!!!"; // ASK MIKE S ABOUT THIS FUNCTION AND THE FUNCTION FOR NUM_MERCHANT_ID_TSYS!!!
+    blankVariableForm.NUM_NUMCOMM = `3${storeNum}${storeLookup[storeType].numcommAppend}`; // Double check this function with MIKE S!!!
     blankVariableForm.NUM_MERCHANT_ID_SAVEBACK = "00000000000";
     blankVariableForm.POS_POS_NUMBER = values[25];
 
     GAX_DATA.push({
-      cell1: blankVariableForm.E_PORTAL_ZONE,
-      cell2: blankVariableForm.NUM_NUMCOMM,
-      cell3: blankVariableForm.NUM_MERCHANT_ID_SAVEBACK,
-      cell4: blankVariableForm.POS_POS_NUMBER,
+      1: blankVariableForm.E_PORTAL_ZONE,
+      2: blankVariableForm.NUM_NUMCOMM,
+      3: blankVariableForm.NUM_MERCHANT_ID_SAVEBACK,
+      4: blankVariableForm.POS_POS_NUMBER,
     });
   });
   return GAX_DATA;
