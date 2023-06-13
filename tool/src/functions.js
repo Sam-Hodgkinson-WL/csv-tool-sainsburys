@@ -42,6 +42,18 @@ let blankVariableForm = {
   ADDRESS_2_2: undefined,
 };
 
+let blankOutputForm = {
+  AA: undefined,
+  AB: undefined,
+  AC: undefined,
+  AD: undefined,
+  AE: undefined,
+  AF: undefined,
+  AG: undefined,
+  AH: undefined,
+  AI: undefined,
+};
+
 const storeLookup = {
   Main: { numcommAppend: "00", worldpayID: "025549" },
   PFS: { numcommAppend: "01", worldpayID: "027492" },
@@ -168,9 +180,25 @@ async function createGAX(data) {
   return GAX_DATA;
 }
 
+function createOutputData(data) {
+  const lines = data.split("\n");
+  lines.forEach((line) => {
+    const values = line.split("\t");
+    const LEVEL_3_SPLIT = values[2].split("_");
+    const storeNum = values[3];
+    const storeType = LEVEL_3_SPLIT[1];
+    blankOutputForm.AA = storeType === "OPT" ? "Y" : "N";
+    blankOutputForm.AB = storeType;
+    blankOutputForm.AC = `3${storeNum}${storeLookup[storeType].numcommAppend}`;
+    // set all variables AA - AI in the blankOutputForm variable defined above
+  });
+  console.log(data);
+}
+
 module.exports = {
   createADM,
   createCPA,
   createAGC,
   createGAX,
+  createOutputData,
 };

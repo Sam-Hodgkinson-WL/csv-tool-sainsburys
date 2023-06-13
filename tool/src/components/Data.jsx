@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import CsvDownloader from "react-csv-downloader";
+import { BiCopyAlt } from "react-icons/bi";
 import "../style/data.css";
 
-import { createADM, createCPA, createAGC, createGAX } from "../functions";
+import {
+  createADM,
+  createCPA,
+  createAGC,
+  createGAX,
+  createOutputData,
+} from "../functions";
 
 function Data() {
   const [rawData, setRawData] = useState(undefined);
+  const [outputData, setOutputData] = useState(undefined);
 
   const CPAColumns = [
     {
@@ -124,6 +132,15 @@ function Data() {
     },
   ];
 
+  const handleCopyButtonClick = async () => {
+    await createOutputData(rawData);
+    outputData
+      ? navigator.clipboard.writeText(outputData)
+      : window.Error(
+          "Something went wrong with the generation of the output data"
+        );
+  };
+
   return (
     <div>
       <textarea
@@ -134,7 +151,7 @@ function Data() {
         <CsvDownloader
           text="Download ADM"
           columns={ADMColumns}
-          datas={createADM(rawData)}
+          datas={() => createADM(rawData)}
           filename="ADM"
           extension=".csv"
           separator=";"
@@ -142,7 +159,7 @@ function Data() {
         <CsvDownloader
           text="Download CPA"
           columns={CPAColumns}
-          datas={createCPA(rawData)}
+          datas={() => createCPA(rawData)}
           filename="CPA"
           extension=".csv"
           separator=";"
@@ -150,7 +167,7 @@ function Data() {
         <CsvDownloader
           text="Download AGC"
           columns={AGCColumns}
-          datas={createAGC(rawData)}
+          datas={() => createAGC(rawData)}
           filename="AGC"
           extension=".csv"
           separator=";"
@@ -158,10 +175,15 @@ function Data() {
         <CsvDownloader
           text="Download GAX"
           columns={GAXColumns}
-          datas={createGAX(rawData)}
+          datas={() => createGAX(rawData)}
           filename="GAX"
           extension=".csv"
           separator=";"
+        />
+        <BiCopyAlt
+          className="copy-button"
+          size={55}
+          onClick={() => handleCopyButtonClick()}
         />
       </div>
     </div>
