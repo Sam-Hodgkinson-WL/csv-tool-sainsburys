@@ -1,39 +1,24 @@
 ////////////////////////////////////////////////////////////////////
 // Raw Data
 let blankVariableForm = {
-  //****************************** ADM CSV ******************************
   E_PORTAL_ZONE: undefined,
   POS_POS_NUMBER: undefined,
   POS_PCI4: undefined,
-  //****************************** CPA CSV ******************************
-  //E_PORTAL_ZONE DEFINED ABOVE
   NUM_NUMCOMM: undefined,
   NUM_MERCHANT_ID_WORLDPAY: undefined,
   NUM_MERCHANT_ID_AMEX: undefined,
   NUM_MERCHANT_ID_BARCLAYCARD: undefined,
   NUM_MERCHANT_ID_TSYS: undefined,
   POS_TERMINAL_ID: undefined,
-  // POS_POS_NUMBER: undefined, DEFINED ABOVE
   NUM_ENVIRONMENT: undefined,
   NUM_COMPANY_ID_WORLDPAY: undefined,
   NUM_BEACH: undefined,
   NUM_AFD: undefined,
   POS_ENVIRONMENT: undefined,
-  //****************************** AGC CSV ******************************
-  //E_PORTAL_ZONE DEFINED ABOVE
-  // NUM_NUMCOMM DEFINED ABOVE
   NUM_MERCHANT_ID_IKANO: undefined,
   NUM_MERCHANT_ID_PPSUK: undefined,
   NUM_MERCHANT_ID_EPAYUK: undefined,
-  //POS_TERMINAL_ID DEFINED ABOVE
-  //POS_POS_NUMBER DEFINED ABOVE
-  //****************************** GAX CSV ******************************
-  // E_PORTAL_ZONE DEFINED ABOVE
-  // NUM_NUMCOMM DEFINED ABOVE
   NUM_MERCHANT_ID_SAVEBACK: undefined,
-  //POS_POS_NUMBER DEFINED ABOVE#
-  //****************************** MASSMOVE CSV ******************************
-  // E_PORTAL_ZONE DEFINED ABOVE
   CURRENCY: undefined,
   CUSTOMER_FINANCE_EXTERNAL_ID: undefined,
   CITY_2: undefined,
@@ -180,7 +165,23 @@ async function createGAX(data) {
   return GAX_DATA;
 }
 
+function checkNewEnv(tpv) {
+  const checkAgainst = ["001", "061", "111", "166", "181"];
+  const tpvSplit = tpv.split("");
+  const env = tpvSplit.slice(-3, tpvSplit.length).join("");
+  return checkAgainst.includes(env) ? "Yes" : "No";
+}
+
+function checkDefined(WP, Amx, Brcl) {
+  if (WP !== undefined && Amx !== undefined && Brcl !== undefined) {
+    return "/-/-/";
+  } else {
+    return "You will have to do this manually with Mikes Excel sheets!";
+  }
+}
+
 function createOutputData(data) {
+  let returnArr = [];
   const lines = data.split("\n");
   lines.forEach((line) => {
     const values = line.split("\t");
@@ -190,9 +191,19 @@ function createOutputData(data) {
     blankOutputForm.AA = storeType === "OPT" ? "Y" : "N";
     blankOutputForm.AB = storeType;
     blankOutputForm.AC = `3${storeNum}${storeLookup[storeType].numcommAppend}`;
-    // set all variables AA - AI in the blankOutputForm variable defined above
+    blankOutputForm.AD = "COME BACK TO THIS! MIGHT NEED TO POPULATE AN ARRAY OF ALL TID's"; // prettier-ignore
+    blankOutputForm.AE = values[2] === `${LEVEL_3_SPLIT[0]} ${values[4]}`;
+    blankOutputForm.AF = "Come back to this one at a later date - CARD_ACC OK?";
+    blankOutputForm.AG = "Come back to this one at a later date - MAIN/LOCAL CLASH" // prettier-ignore
+    blankOutputForm.AH = checkNewEnv(values[25]);
+    blankOutputForm.AI = checkDefined(values[13], values[14], values[16]);
+
+    returnArr.push(
+      `${line}\t${blankOutputForm.AA}\t${blankOutputForm.AB}\t${blankOutputForm.AC}\t${blankOutputForm.AD}\t${blankOutputForm.AE}\t${blankOutputForm.AF}\t${blankOutputForm.AG}\t${blankOutputForm.AH}\t${blankOutputForm.AI}`
+    );
+    returnArr.push("\n");
   });
-  console.log(data);
+  return returnArr.join("");
 }
 
 module.exports = {

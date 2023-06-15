@@ -9,6 +9,7 @@ import {
   createAGC,
   createGAX,
   createOutputData,
+  cleanOutputData,
 } from "../functions";
 
 function Data() {
@@ -133,7 +134,9 @@ function Data() {
   ];
 
   const handleCopyButtonClick = async () => {
-    await createOutputData(rawData);
+    // let dirtyOutputData = createOutputData(rawData);
+    // setOutputData(cleanOutputData(dirtyOutputData)); // Required function to remove the empty cell in excel
+    setOutputData(createOutputData(rawData));
     outputData
       ? navigator.clipboard.writeText(outputData)
       : window.Error(
