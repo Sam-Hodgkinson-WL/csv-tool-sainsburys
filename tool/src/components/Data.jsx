@@ -15,6 +15,8 @@ import {
 function Data() {
   const [rawData, setRawData] = useState(undefined);
   const [outputData, setOutputData] = useState(undefined);
+  const [singleStore, setSingleStore] = useState("andOthers");
+  const [storeNumber, setStoreNumber] = useState("");
 
   const CPAColumns = [
     {
@@ -150,44 +152,67 @@ function Data() {
         placeholder="Enter the data from the raw data tab"
         onChange={(e) => setRawData(e.target.value)}
       ></textarea>
+      <div className="file-name-form">
+        <label>Store Number: </label>
+        <input type="text" onChange={(e) => setStoreNumber(e.target.value)} />
+        <select onChange={(e) => setSingleStore(e.target.value)}>
+          <option value="andOthers">Multiple stores</option>
+          <option value="">Single store</option>
+        </select>
+        <button onClick={() => console.log(singleStore)}>
+          Console singleStore
+        </button>
+      </div>
       <div className="buttons">
         <CsvDownloader
           text="Download ADM"
           columns={ADMColumns}
           datas={() => createADM(rawData)}
-          filename="ADM"
+          filename={`Store-${storeNumber}${singleStore}-ADM`} // prettier-ignore
           extension=".csv"
           separator=";"
+          disabled={!rawData}
         />
         <CsvDownloader
           text="Download CPA"
           columns={CPAColumns}
           datas={() => createCPA(rawData)}
-          filename="CPA"
+          filename={`Store-${storeNumber}${singleStore}-CPA`} // prettier-ignore
           extension=".csv"
           separator=";"
+          disabled={!rawData}
         />
         <CsvDownloader
           text="Download AGC"
           columns={AGCColumns}
           datas={() => createAGC(rawData)}
-          filename="AGC"
+          filename={`Store-${storeNumber}${singleStore}-AGC`} // prettier-ignore
           extension=".csv"
           separator=";"
+          disabled={!rawData}
         />
         <CsvDownloader
           text="Download GAX"
           columns={GAXColumns}
           datas={() => createGAX(rawData)}
-          filename="GAX"
+          filename={`Store-${storeNumber}${singleStore}-GAX`} // prettier-ignore
           extension=".csv"
           separator=";"
+          disabled={!rawData}
         />
-        <BiCopyAlt
+        <button
+          className="copy-button"
+          onClick={() => handleCopyButtonClick()}
+          disabled={!rawData}
+        >
+          Copy Output Data
+        </button>
+        {/* <BiCopyAlt
           className="copy-button"
           size={55}
           onClick={() => handleCopyButtonClick()}
-        />
+          disabled={!rawData}
+        /> */}
       </div>
     </div>
   );
