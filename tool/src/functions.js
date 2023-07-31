@@ -1,4 +1,8 @@
 ////////////////////////////////////////////////////////////////////
+// DO NOT MOVE THIS VARIABLE
+const massmoveArray = [];
+
+////////////////////////////////////////////////////////////////////
 // Raw Data
 let blankVariableForm = {
   E_PORTAL_ZONE: undefined,
@@ -19,7 +23,7 @@ let blankVariableForm = {
   NUM_MERCHANT_ID_PPSUK: undefined,
   NUM_MERCHANT_ID_EPAYUK: undefined,
   NUM_MERCHANT_ID_SAVEBACK: undefined,
-  CURRENCY: undefined,
+  CURRENCY: "GBP",
   CUSTOMER_FINANCE_EXTERNAL_ID: undefined,
   CITY_2: undefined,
   ZIP_CODE_2: undefined,
@@ -146,6 +150,7 @@ async function createAGC(data) {
   });
   return AGC_DATA;
 }
+
 ////////////////////////////////////////////////////////////////////
 // GAX
 async function createGAX(data) {
@@ -174,10 +179,30 @@ async function createGAX(data) {
   return GAX_DATA;
 }
 
-function checkNewEnv(tpv) {
+function checkNewEnv(tpv, line) {
+  const values = line.split("\t");
+  console.log(values);
   const checkAgainst = ["001", "061", "111", "166", "181"];
   const tpvSplit = tpv.split("");
   const env = tpvSplit.slice(-3, tpvSplit.length).join("");
+  const E_PORTAL_ZONE = `${values[0]}>>${values[1]}>>${values[2]}`;
+  const FINANCE_EXTERNAL_ID = values[11];
+  const CITY_2 = values[6];
+  const ZIP_CODE_2 = values[7];
+  const ADDRESS_1_2 = values[5];
+  const ADDRESS_2_2 = `${values[6]} ${values[7]}`;
+  const massmoveEntry = {
+    1: E_PORTAL_ZONE,
+    2: blankVariableForm.CURRENCY,
+    3: FINANCE_EXTERNAL_ID,
+    4: CITY_2,
+    5: ZIP_CODE_2,
+    6: ADDRESS_1_2,
+    7: ADDRESS_2_2,
+  };
+  if (checkAgainst.includes(env)) {
+    massmoveArray.push(massmoveEntry);
+  }
   return checkAgainst.includes(env) ? "Yes" : "No";
 }
 
@@ -194,6 +219,9 @@ function createOutputData(data) {
   const lines = data.split("\n");
   lines.forEach((line) => {
     const values = line.split("\t");
+    if (values[2] === undefined) {
+      return;
+    }
     const LEVEL_3_SPLIT = values[2].split("_");
     const storeNum = values[3];
     const storeType = LEVEL_3_SPLIT[1];
@@ -204,7 +232,7 @@ function createOutputData(data) {
     blankOutputForm.AE = values[2] === `${LEVEL_3_SPLIT[0]} ${values[4]}`;
     blankOutputForm.AF = "Come back to this one at a later date - CARD_ACC OK?";
     blankOutputForm.AG = "Come back to this one at a later date - MAIN/LOCAL CLASH" // prettier-ignore
-    blankOutputForm.AH = checkNewEnv(values[25]);
+    blankOutputForm.AH = checkNewEnv(values[25], line);
     blankOutputForm.AI = checkDefined(values[13], values[14], values[16]);
 
     returnArr.push(
@@ -221,4 +249,5 @@ module.exports = {
   createAGC,
   createGAX,
   createOutputData,
+  massmoveArray,
 };
