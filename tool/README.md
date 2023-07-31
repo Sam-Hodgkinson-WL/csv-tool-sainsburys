@@ -1,23 +1,31 @@
 # How to install and run this on your machine
 
+## Pre-requisites
+
+- Install node.js on your machine... https://nodejs.org/en/download (I know the site looks dodge, but it's legit... Promise!) You can just click on the windows icon for the most up to date version.
+
+- Install GIT BASH on your machine... https://git-scm.com/download/win (Choose "64-bit Git for Windows Setup".)
+
+## Installing the tool
+
 1. Extract this zip folders contents to wherever you want to install the tool, I have mine in C:/Program_Files (The folder structure should be C:/Program_Files/sains-tool/tool) Make sure you edit the open.sh file to reflect the correct file path
 
-2. Copy and paste the open.sh somewhere accessible, I have mine on my Desktop
+- Copy and paste the open.sh somewhere accessible, I have mine on my Desktop
 
-3. Double click on the open.sh file (you might have to install git bash first) https://git-scm.com/download/win
+- Double click on the open.sh file (This should open in GIT BASH)
 
-4. There will be some messages that appear in the terminal window, you won't have to do anything, but wait for the message to say you can close the terminal
+- There will be some messages that appear in the terminal window, you won't have to do anything, but wait for the message to say you can close the terminal
 
-5. The app will now be running on port 3000, you can access it by going to your browser and going to http://localhost:3000
+- The app will now be running on port 3000, you can access it by going to your browser and going to http://localhost:3000
 
-6. This service will run until you shutdown or restart your machine.
+- This service will run until you shutdown or restart your machine.
 
 ## Alternatively, if something goes wrong with the shell script,
 
 1. Open git bash (or the terminal of your choice and cd to where the tool is installed)
 
-2. You want to be able to see the package.json file when either the ls command (git) or dir command (powershell/cmd) is run
+- You want to be able to see the package.json file when either the ls command (git) or dir command (powershell/cmd) is run
 
-3. Run the command 'npm i'
+- Run the command 'npm i'
 
-4. Once complete, run 'npm start'
+- Once complete, run 'npm start'
