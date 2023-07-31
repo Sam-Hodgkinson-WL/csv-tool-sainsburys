@@ -72,8 +72,11 @@ function createADM(data) {
 async function createCPA(data) {
   const CPA_DATA = [];
   const lines = data.split("\n");
-  await lines.forEach((line) => {
+  lines.forEach((line) => {
     const values = line.split("\t");
+    if (values[2] === undefined) {
+      return;
+    }
     const LEVEL_3_SPLIT = values[2].split("_");
     const storeNum = values[3];
     const storeType = LEVEL_3_SPLIT[1];
@@ -113,10 +116,13 @@ async function createCPA(data) {
 ////////////////////////////////////////////////////////////////////
 // AGC
 async function createAGC(data) {
-  const AGC_DATA = [];
+  let AGC_DATA = [];
   const lines = data.split("\n");
   await lines.forEach((line) => {
     const values = line.split("\t");
+    if (values[2] === undefined) {
+      return;
+    }
     const LEVEL_3_SPLIT = values[2].split("_");
     const storeNum = values[3];
     const storeType = LEVEL_3_SPLIT[1];
@@ -147,6 +153,9 @@ async function createGAX(data) {
   const lines = data.split("\n");
   await lines.forEach((line) => {
     const values = line.split("\t");
+    if (values[2] === undefined) {
+      return;
+    }
     const LEVEL_3_SPLIT = values[2].split("_");
     const storeNum = values[3];
     const storeType = LEVEL_3_SPLIT[1];

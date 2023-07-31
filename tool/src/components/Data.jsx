@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CsvDownloader from "react-csv-downloader";
-import { BiCopyAlt } from "react-icons/bi";
 import "../style/data.css";
 
-import {
-  createADM,
-  createCPA,
-  createAGC,
-  createGAX,
-  createOutputData,
-  cleanOutputData,
-} from "../functions";
+import { createADM, createCPA, createAGC, createGAX } from "../functions";
 
 function Data() {
   const [rawData, setRawData] = useState(undefined);
-  const [outputData, setOutputData] = useState(undefined);
   const [singleStore, setSingleStore] = useState("andOthers");
   const [storeNumber, setStoreNumber] = useState("");
+  const [ADMData, setADMData] = useState(undefined);
+  const [CPAData, setCPAData] = useState(undefined);
+  const [AGCData, setAGCData] = useState(undefined);
+  const [GAXData, setGAXData] = useState(undefined);
+
+  useEffect(() => {
+    if (rawData !== undefined && rawData[0] !== undefined) {
+      setADMData(createADM(rawData));
+      setCPAData(createCPA(rawData));
+      setAGCData(createAGC(rawData));
+      setGAXData(createGAX(rawData));
+    }
+  }, [rawData]);
 
   const CPAColumns = [
     {
@@ -135,17 +139,6 @@ function Data() {
     },
   ];
 
-  const handleCopyButtonClick = async () => {
-    // let dirtyOutputData = createOutputData(rawData);
-    // setOutputData(cleanOutputData(dirtyOutputData)); // Required function to remove the empty cell in excel
-    setOutputData(createOutputData(rawData));
-    outputData
-      ? navigator.clipboard.writeText(outputData)
-      : window.Error(
-          "Something went wrong with the generation of the output data"
-        );
-  };
-
   return (
     <div>
       <textarea
@@ -159,60 +152,51 @@ function Data() {
           <option value="andOthers">Multiple stores</option>
           <option value="">Single store</option>
         </select>
-        <button onClick={() => console.log(singleStore)}>
-          Console singleStore
-        </button>
       </div>
       <div className="buttons">
         <CsvDownloader
           text="Download ADM"
           columns={ADMColumns}
-          datas={() => createADM(rawData)}
+          datas={ADMData}
           filename={`Store-${storeNumber}${singleStore}-ADM`} // prettier-ignore
           extension=".csv"
           separator=";"
-          disabled={!rawData}
+          disabled={!rawData || !ADMData}
         />
         <CsvDownloader
           text="Download CPA"
           columns={CPAColumns}
-          datas={() => createCPA(rawData)}
+          datas={CPAData}
           filename={`Store-${storeNumber}${singleStore}-CPA`} // prettier-ignore
           extension=".csv"
           separator=";"
-          disabled={!rawData}
+          disabled={!rawData || !CPAData}
         />
         <CsvDownloader
           text="Download AGC"
           columns={AGCColumns}
-          datas={() => createAGC(rawData)}
+          datas={AGCData}
           filename={`Store-${storeNumber}${singleStore}-AGC`} // prettier-ignore
           extension=".csv"
           separator=";"
-          disabled={!rawData}
+          disabled={!rawData || !AGCData}
         />
         <CsvDownloader
           text="Download GAX"
           columns={GAXColumns}
-          datas={() => createGAX(rawData)}
+          datas={GAXData}
           filename={`Store-${storeNumber}${singleStore}-GAX`} // prettier-ignore
           extension=".csv"
           separator=";"
-          disabled={!rawData}
+          disabled={!rawData || !GAXData}
         />
-        <button
+        {/* <button
           className="copy-button"
           onClick={() => handleCopyButtonClick()}
           disabled={!rawData}
         >
           Copy Output Data
-        </button>
-        {/* <BiCopyAlt
-          className="copy-button"
-          size={55}
-          onClick={() => handleCopyButtonClick()}
-          disabled={!rawData}
-        /> */}
+        </button> */}
       </div>
     </div>
   );
