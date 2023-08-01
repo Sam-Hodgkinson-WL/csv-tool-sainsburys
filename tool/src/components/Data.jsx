@@ -9,7 +9,7 @@ import {
   createAGC,
   createGAX,
   createOutputData,
-  massmoveArray,
+  massmoveObject,
 } from "../functions";
 
 function Data() {
@@ -21,9 +21,15 @@ function Data() {
   const [AGCData, setAGCData] = useState(undefined);
   const [GAXData, setGAXData] = useState(undefined);
   const [outputData, setOutputData] = useState(undefined);
+  const [count, setCount] = useState(0);
 
   function handleCopyButtonClick() {
     navigator.clipboard.writeText(outputData);
+  }
+
+  function handleCreateDataClick() {
+    setOutputData(createOutputData(rawData));
+    setCount(count + 1);
   }
 
   useEffect(() => {
@@ -32,7 +38,7 @@ function Data() {
       setCPAData(createCPA(rawData));
       setAGCData(createAGC(rawData));
       setGAXData(createGAX(rawData));
-      setOutputData(createOutputData(rawData));
+      console.log(count);
     }
   }, [rawData]);
 
@@ -235,15 +241,23 @@ function Data() {
             separator=";"
             disabled={!rawData || !GAXData}
           />
+          <button
+            disabled={count > 0 || !rawData ? true : false}
+            onClick={() => {
+              handleCreateDataClick();
+            }}
+          >
+            Create Massmove and Output data
+          </button>
           <CsvDownloader
             text="Download Massmove"
             columns={massmoveColumns}
-            datas={massmoveArray}
+            datas={massmoveObject}
             filename={`Store-${storeNumber}${singleStore}-Massmove`}
             extension=".csv"
             separator=";"
+            // disabled={!rawData || !massmoveData}
           />
-
           <button
             className="copy-button"
             onClick={() => handleCopyButtonClick()}
@@ -286,7 +300,10 @@ function Data() {
             <tr>
               <td>3</td>
               <td>Click on the Download ADM, CPA, AGC and GAX buttons below</td>
-              <td>These files will be downloaded to your Downloads folder</td>
+              <td>
+                These files will be downloaded to your Downloads folder. The
+                buttons are disabled if there is no data to download
+              </td>
             </tr>
             <tr>
               <td>4</td>

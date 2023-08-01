@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////
 // DO NOT MOVE THIS VARIABLE
-const massmoveArray = [];
+const massmoveObject = [];
 
 ////////////////////////////////////////////////////////////////////
 // Raw Data
@@ -181,7 +181,6 @@ async function createGAX(data) {
 
 function checkNewEnv(tpv, line) {
   const values = line.split("\t");
-  console.log(values);
   const checkAgainst = ["001", "061", "111", "166", "181"];
   const tpvSplit = tpv.split("");
   const env = tpvSplit.slice(-3, tpvSplit.length).join("");
@@ -201,7 +200,8 @@ function checkNewEnv(tpv, line) {
     7: ADDRESS_2_2,
   };
   if (checkAgainst.includes(env)) {
-    massmoveArray.push(massmoveEntry);
+    console.log("just ran");
+    massmoveObject.push(massmoveEntry);
   }
   return checkAgainst.includes(env) ? "Yes" : "No";
 }
@@ -249,5 +249,5 @@ module.exports = {
   createAGC,
   createGAX,
   createOutputData,
-  massmoveArray,
+  massmoveObject,
 };
