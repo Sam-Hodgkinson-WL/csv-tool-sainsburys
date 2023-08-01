@@ -229,7 +229,7 @@ function createOutputData(data) {
     blankOutputForm.AB = storeType;
     blankOutputForm.AC = `3${storeNum}${storeLookup[storeType].numcommAppend}`;
     blankOutputForm.AD = "COME BACK TO THIS! MIGHT NEED TO POPULATE AN ARRAY OF ALL TID's"; // prettier-ignore
-    blankOutputForm.AE = values[2] === `${LEVEL_3_SPLIT[0]} ${values[4]}`;
+    blankOutputForm.AE = values[2] === `${LEVEL_3_SPLIT[0]} ${values[4]}`; // Double check
     blankOutputForm.AF = "Come back to this one at a later date - CARD_ACC OK?";
     blankOutputForm.AG = "Come back to this one at a later date - MAIN/LOCAL CLASH" // prettier-ignore
     blankOutputForm.AH = checkNewEnv(values[25], line);

@@ -20,12 +20,8 @@ function Data() {
   const [CPAData, setCPAData] = useState(undefined);
   const [AGCData, setAGCData] = useState(undefined);
   const [GAXData, setGAXData] = useState(undefined);
-  const [outputData, setOutputData] = useState(undefined);
+  const [outputData, setOutputData] = useState(undefined); // Do not remove, will remove functionality for creating massmove data
   const [count, setCount] = useState(0);
-
-  function handleCopyButtonClick() {
-    navigator.clipboard.writeText(outputData);
-  }
 
   function handleCreateDataClick() {
     setOutputData(createOutputData(rawData));
@@ -247,7 +243,7 @@ function Data() {
               handleCreateDataClick();
             }}
           >
-            Create Massmove and Output data
+            Create Massmove data
           </button>
           <CsvDownloader
             text="Download Massmove"
@@ -256,15 +252,7 @@ function Data() {
             filename={`Store-${storeNumber}${singleStore}-Massmove`}
             extension=".csv"
             separator=";"
-            // disabled={!rawData || !massmoveData}
           />
-          <button
-            className="copy-button"
-            onClick={() => handleCopyButtonClick()}
-            disabled={!rawData || !outputData}
-          >
-            Copy Output Data
-          </button>
         </div>
       </div>
       <div className="instructions-container">
