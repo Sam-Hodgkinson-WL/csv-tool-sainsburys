@@ -33,6 +33,7 @@ start_npm
 trap handle_sighup EXIT SIGINT SIGTERM SIGHUP
 
 # Wait until the script is terminated (you can add more commands here if needed)
-echo 'You can now close this window, if you close the browser tab with the tool you will be able to get back to it by going to http://localhost:3000 again'
+echo 'You can close this window when you see "webpack compiled $$$$$$$$$"' 
+echo 'If you close the browser tab with the tool you will be able to get back to it by going to http://localhost:3000'
 echo 'You only need to run this once when you start your PC up, the service will be active until you shutdown or restart'
 wait

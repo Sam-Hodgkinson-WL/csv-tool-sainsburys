@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CsvDownloader from "react-csv-downloader";
-import "../style/data.css";
+
+import "../style/App.css";
 
 import {
   createADM,
@@ -20,7 +21,6 @@ function Data() {
   const [AGCData, setAGCData] = useState(undefined);
   const [GAXData, setGAXData] = useState(undefined);
   const [outputData, setOutputData] = useState(undefined);
-  const [massmoveData, setMassmoveData] = useState(undefined);
 
   function handleCopyButtonClick() {
     navigator.clipboard.writeText(outputData);
@@ -33,7 +33,6 @@ function Data() {
       setAGCData(createAGC(rawData));
       setGAXData(createGAX(rawData));
       setOutputData(createOutputData(rawData));
-      setMassmoveData(massmoveArray);
     }
   }, [rawData]);
 
@@ -185,10 +184,10 @@ function Data() {
   ];
 
   return (
-    <div>
+    <div className="App">
       <div className="user-container">
         <textarea
-          placeholder="Enter the data from the raw data tab"
+          placeholder="Enter the data from the Sainsbury's provided data..."
           onChange={(e) => setRawData(e.target.value)}
         ></textarea>
         <div className="file-name-form">
@@ -253,6 +252,56 @@ function Data() {
             Copy Output Data
           </button>
         </div>
+      </div>
+      <div className="instructions-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Instruction</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                Copy and paste the info from the Sainsbur's Provided data to the
+                input field above
+              </td>
+              <td>
+                You will need to remove the final 'ENTER' keypress from the end
+                of the pasted data
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>
+                Enter the first store number from the input data and select if
+                it's multilple store or just one
+              </td>
+              <td>This will effect the name of the files you download next</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Click on the Download ADM, CPA, AGC and GAX buttons below</td>
+              <td>These files will be downloaded to your Downloads folder</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Click on the Download Massmove button below</td>
+              <td>If this file is empty, then it wasn't required</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Click on the Copy Output Data button below</td>
+              <td>
+                You can paste this into the 'Mikes working weeks' csv file
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

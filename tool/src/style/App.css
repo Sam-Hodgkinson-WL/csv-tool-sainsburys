@@ -1,0 +1,73 @@
+@font-face {
+  font-family: "roboto";
+  src: url("../fonts/Roboto-Black.ttf");
+}
+
+* {
+  font-family: "roboto";
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  margin-top: 2rem;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-container * {
+  margin-bottom: 1rem;
+}
+
+button {
+  height: 2rem;
+  background-color: aqua;
+  border-radius: 25px;
+  padding: 1rem;
+  margin: 0.3rem;
+
+  display: flex;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons:hover > button {
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  cursor: pointer;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+textarea {
+  width: 90vw;
+  height: 22rem;
+}
