@@ -28,10 +28,11 @@
 
 button {
   height: 2rem;
-  background-color: aqua;
-  border-radius: 25px;
+  background-color: #41b4d2;
+  border-radius: 5px;
   padding: 1rem;
   margin: 0.3rem;
+  color: white;
 
   display: flex;
   align-items: center;

@@ -266,8 +266,8 @@ function Data() {
             <tr>
               <td>1</td>
               <td>
-                Copy and paste the info from the Sainsbur's Provided data to the
-                input field above
+                Copy and paste the info from the Sainsbury's Provided data to
+                the input field above
               </td>
               <td>
                 You will need to remove the final 'ENTER' keypress from the end
