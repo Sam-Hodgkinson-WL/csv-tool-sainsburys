@@ -236,7 +236,7 @@ function Data() {
             disabled={!rawData || !GAXData}
           />
           <CsvDownloader
-            text="Download Massmove (TO BE COMPLETED)"
+            text="Download Massmove"
             columns={massmoveColumns}
             datas={massmoveArray}
             filename={`Store-${storeNumber}${singleStore}-Massmove`}
